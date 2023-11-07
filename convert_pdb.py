@@ -1,8 +1,8 @@
 import re
 
 # Load input PDB file
-input_pdb_file = "I2A-lunatin1.pdb"
-output_pdb_file = "I2A-lunatin1_01.pdb"
+input_pdb_file = "input.pdb"
+output_pdb_file = "output.pdb"
 
 with open(input_pdb_file, 'r') as infile:
     lines = infile.readlines()
