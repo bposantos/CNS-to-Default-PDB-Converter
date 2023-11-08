@@ -7,8 +7,6 @@ input_pdb_file = input("Digite o nome do arquivo pdb (com o caminho): ")
 caminho = input_pdb_file.split("/")[:-1]
 caminho = "/".join(caminho)
 
-print(caminho)
-
 with open(input_pdb_file, 'r') as infile:
     lines = infile.readlines()
 
@@ -43,7 +41,7 @@ def chain(lines):
             # Modify chain as needed
             residue_name = line[17:20]
             if len(residue_name) == 3 or (residue_name == "NH2"):
-                line = line[:21] + " A" + line[22:]
+                line = line[:21] + "A" + line[22:]
 
         modified_lines.append(line)
 
