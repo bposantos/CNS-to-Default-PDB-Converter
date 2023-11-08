@@ -1,8 +1,13 @@
+#!/usr/bin/env python3
+
 import re
 
 # Load input PDB file
-input_pdb_file = "input.pdb"
-output_pdb_file = "output.pdb"
+input_pdb_file = input("Digite o nome do arquivo pdb (com o caminho): ")
+caminho = input_pdb_file.split("/")[:-1]
+caminho = "/".join(caminho)
+
+print(caminho)
 
 with open(input_pdb_file, 'r') as infile:
     lines = infile.readlines()
@@ -96,5 +101,5 @@ lines = remove_remark_lines(lines)
 lines = remove_conect_lines_except_last_model(lines)
 
 # Write the filtered content to the output file
-with open(output_pdb_file, 'w') as outfile:
+with open(caminho+"/output.pdb", 'w') as outfile:
     outfile.writelines(lines)
