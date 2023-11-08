@@ -65,7 +65,7 @@ def add_ter(lines):
             prev_line = modified_lines[-2]
             match = re.search(r"(ATOM|HETATM)\s+(\d+)\s+\S+\s+(\S{3})\s+(\S)\s+(\d+)", prev_line)            
             # Add the "TER" line with extracted information
-            ter_line = f"TER     {int(match.group(2))+1}      {match.group(3)}  {match.group(4)}  {match.group(5)}\n"
+            ter_line = f"TER     {int(match.group(2))+1}      {match.group(3)} {match.group(4)}  {match.group(5)}\n"
             modified_lines.insert(-1, ter_line)
 
     return modified_lines
