@@ -29,7 +29,54 @@ def main():
 
         return lines
 
-    def atoms(lines):
+    def correct_model_endmdl(lines):
+        num_models = 0
+        has_endmdl = False
+        has_model_before_atom = False
+        corrected_lines = []
+
+        for line in lines:
+            if line.startswith('MODEL'):
+                num_models += 1
+                has_endmdl = False  # Reset the flag when a new model starts
+                has_model_before_atom = True  # Assume there is a MODEL line before 'ATOM 1'
+                corrected_lines.append(line)
+            elif line.startswith('ATOM      1'):
+                # If 'ATOM 1' line is found, check if there is a MODEL line before it
+                if not has_model_before_atom:
+                    num_models += 1
+                    has_endmdl = False  # Reset the flag when a new model starts
+                    corrected_lines.append('MODEL     {:>4}\n'.format(num_models))
+                corrected_lines.append(line)
+                has_model_before_atom = True
+            elif line.startswith('ENDMDL'):
+                has_endmdl = True
+                corrected_lines.append(line)
+                has_model_before_atom = False  # Reset the flag when a new model ends
+            elif line.startswith('END') and not has_endmdl:
+                # Replace each line 'END' with 'ENDMDL' if a preceding ENDMDL line is not present
+                corrected_lines.append('ENDMDL\n')
+            else:
+                corrected_lines.append(line)
+
+        return corrected_lines
+
+
+    def insert_atoms(lines):
+        for i in range(len(lines)):
+            if "1.00  0.00         A" in lines[i]:
+                atom_name = lines[i][12:16].strip()  # Third column (ATOM name)
+                last_column = lines[i][75]  # Last column (last character of the line)
+                # Get the first letter of the third column
+                first_letter = atom_name[0]
+                # Substitute the last column
+                lines[i] = lines[i][:75] + "  " + first_letter + lines[i][76:]
+            else:
+                None
+
+        return lines
+
+    def atoms_from_chimera(lines):
         for i in range(len(lines)):
             # Modify atom lines as needed
             if "0.00         A H" in lines[i]:
@@ -40,6 +87,8 @@ def main():
                 lines[i] = lines[i].replace("0.00         A N", "0.00           N")
             elif "0.00         A C" in lines[i]:
                 lines[i] = lines[i].replace("0.00         A C", "0.00           C")
+            else:
+                None
 
         return lines
 
@@ -102,7 +151,9 @@ def main():
 
     # Apply modifications in the desired sequence
     lines = modify_nh2(lines)
-    lines = atoms(lines)
+    lines = correct_model_endmdl(lines)
+    lines = insert_atoms(lines)
+    lines = atoms_from_chimera(lines)
     lines = chain(lines)
     lines = add_ter(lines)
     lines = remove_remark_lines(lines)
