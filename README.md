@@ -8,7 +8,7 @@ Modify the first lines to put the input file (PDB that will be modified) and the
 
 ## Usage
 ```python
-python3 convert_pdb.py
+convert_pdb.py file_name.pdb
 ```
 ## Suggestion
 Open the CNS .pdb file in Chimera and export as PDB before beggining.
