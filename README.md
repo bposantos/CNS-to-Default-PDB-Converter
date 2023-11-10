@@ -13,6 +13,10 @@ After that:
 ```bash
 source ./bashrc
 ```
+Make the code executable:
+```bash
+chmod +x convert_pdb.py
+```
 And execute the code:
 ```python
 convert_pdb.py file_name.pdb
