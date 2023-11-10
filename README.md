@@ -15,11 +15,9 @@ source ./bashrc
 ```
 Make the code executable:
 ```bash
-chmod +x convert_pdb.py
+chmod +x cns_pdb_converter.py
 ```
 And execute the code:
 ```python
-convert_pdb.py file_name.pdb
+cns_pdb_converter.py file_name.pdb
 ```
-## Suggestion
-Open the CNS .pdb file in Chimera and export as PDB before beggining.
