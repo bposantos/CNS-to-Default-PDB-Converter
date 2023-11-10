@@ -13,7 +13,7 @@ After that:
 ```bash
 source ./bashrc
 ```
-
+And execute the code:
 ```python
 convert_pdb.py file_name.pdb
 ```
