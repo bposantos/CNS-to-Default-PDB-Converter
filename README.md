@@ -1,11 +1,11 @@
 # Convert CNS PDB Files Into the Default Format
 
-A code to convert the PDB coordinate file originated by CNS structure calculation software, into a format accepted by most tools, such as Molprobity.
+A code to convert the PDB coordinate file originated by the structure calculation software, CNS, into a format accepted by most tools, such as Molprobity and pyRAMA.
 
 -- Works in one chain proteins.
 
 ## Usage
-export the code path, adding a line to `~/.bashrc` or `~/.bash_profile`:
+Export the code path, adding a line to `~/.bashrc` or `~/.bash_profile`:
 ```bash
 export PATH="/caminho/do/seu/diretorio:$PATH"
 ```
