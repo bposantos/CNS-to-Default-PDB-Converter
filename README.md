@@ -5,6 +5,15 @@ A code to convert the PDB coordinate file originated by CNS structure calculatio
 -- Works in one chain proteins.
 
 ## Usage
+export the code path, adding a line to `~/.bashrc` or `~/.bash_profile`:
+```bash
+export PATH="/caminho/do/seu/diretorio:$PATH"
+```
+After that:
+```bash
+source ./bashrc
+```
+
 ```python
 convert_pdb.py file_name.pdb
 ```
