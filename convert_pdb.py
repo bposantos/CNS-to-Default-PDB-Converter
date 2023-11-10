@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import argparse
-import sys
 import os
 import re
 
@@ -11,7 +10,6 @@ def parse_arguments():
     return parser.parse_args()
 
 def main():
-
     # Get the current working directory
     current_directory = os.getcwd()
 
@@ -21,11 +19,8 @@ def main():
         lines = infile.readlines()
 
     def modify_nh2(lines):
-        for i in range(len(lines)):
-            if "H   NH2    " in lines[i]:
-                lines[i] = lines[i].replace("H   NH2    ", "HN1 NH2    ")
-            elif "H'  NH2    " in lines[i]:
-                lines[i] = lines[i].replace("H'  NH2    ", "HN2 NH2    ")
+        for i, line in enumerate(lines):
+            lines[i] = line.replace("H   NH2    ", "HN1 NH2    ").replace("H'  NH2    ", "HN2 NH2    ")
 
         return lines
 
@@ -61,34 +56,29 @@ def main():
 
         return corrected_lines
 
-
     def insert_atoms(lines):
-        for i in range(len(lines)):
-            if "1.00  0.00         A" in lines[i]:
-                atom_name = lines[i][12:16].strip()  # Third column (ATOM name)
-                last_column = lines[i][75]  # Last column (last character of the line)
+        for i, line in enumerate(lines):
+            if "1.00  0.00         A" in line:
+                atom_name = line[12:16].strip()  # Third column (ATOM name)
+                last_column = line[75]  # Last column (last character of the line)
                 # Get the first letter of the third column
                 first_letter = atom_name[0]
                 # Substitute the last column
-                lines[i] = lines[i][:75] + "  " + first_letter + lines[i][76:]
-            else:
-                None
+                lines[i] = line[:75] + "  " + first_letter + line[76:]
 
         return lines
 
     def atoms_from_chimera(lines):
-        for i in range(len(lines)):
+        for i, line in enumerate(lines):
             # Modify atom lines as needed
-            if "0.00         A H" in lines[i]:
-                lines[i] = lines[i].replace("0.00         A H", "0.00           H")
-            elif "0.00         A O" in lines[i]:
-                lines[i] = lines[i].replace("0.00         A O", "0.00           O")
-            elif "0.00         A N" in lines[i]:
-                lines[i] = lines[i].replace("0.00         A N", "0.00           N")
-            elif "0.00         A C" in lines[i]:
-                lines[i] = lines[i].replace("0.00         A C", "0.00           C")
-            else:
-                None
+            if "0.00         A H" in line:
+                lines[i] = line.replace("0.00         A H", "0.00           H")
+            elif "0.00         A O" in line:
+                lines[i] = line.replace("0.00         A O", "0.00           O")
+            elif "0.00         A N" in line:
+                lines[i] = line.replace("0.00         A N", "0.00           N")
+            elif "0.00         A C" in line:
+                lines[i] = line.replace("0.00         A C", "0.00           C")
 
         return lines
 
@@ -120,19 +110,16 @@ def main():
 
             if not in_model and line.strip() == "ENDMDL":
                 # Add the "TER" line before "ENDMDL"
-                #modified_lines.insert(-1, "TER\n")
                 prev_line = modified_lines[-2]
-                match = re.search(r"(ATOM|HETATM)\s+(\d+)\s+\S+\s+(\S{3})\s+(\S)\s+(\d+)", prev_line)            
+                match = re.search(r"(ATOM|HETATM)\s+(\d+)\s+\S+\s+(\S{3})\s+(\S)\s+(\d+)", prev_line)
                 # Add the "TER" line with extracted information
                 ter_line = f"TER     {int(match.group(2))+1}      {match.group(3)} {match.group(4)}  {match.group(5)}\n"
                 modified_lines.insert(-1, ter_line)
 
         return modified_lines
 
-
     def remove_remark_lines(lines):
-        filtered_lines = [line for line in lines if not line.startswith("REMARK")]
-        return filtered_lines
+        return [line for line in lines if not line.startswith("REMARK")]
 
     def remove_conect_lines_except_last_model(lines):
         model_indices = [i for i, line in enumerate(lines) if line.startswith("MODEL")]
@@ -160,7 +147,7 @@ def main():
     lines = remove_conect_lines_except_last_model(lines)
 
     # Write the filtered content to the output file
-    with open(current_directory+"/output.pdb", 'w') as outfile:
+    with open(current_directory + "/output.pdb", 'w') as outfile:
         outfile.writelines(lines)
 
 if __name__ == "__main__":
