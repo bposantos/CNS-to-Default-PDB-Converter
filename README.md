@@ -1,4 +1,5 @@
 # CNS to Default PDB Converter
+![Logo da Minha Aplicação](https://github.com/bposantos/CNS-to-Default-PDB-Converter/blob/873933b5cf614fc3c5fcb0b86af4db92256bf56d/logo_cns_pdb.png)
 
 A code to convert the PDB coordinate file originated by the structure calculation software, CNS, into a format accepted by most tools, such as Molprobity and pyRAMA.
 
