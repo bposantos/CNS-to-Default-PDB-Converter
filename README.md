@@ -10,6 +10,10 @@ Export the code path, adding a line to `~/.bashrc` or `~/.bash_profile`:
 ```bash
 export PATH="/caminho/do/seu/diretorio:$PATH"
 ```
+Alternatively, move the 'cns_pdb_converter' file to /usr/local/bin/
+```bash
+sudo mv cns_pdb_converter /usr/local/bin/
+```
 After that:
 ```bash
 source ./bashrc
@@ -20,5 +24,5 @@ chmod +x cns_pdb_converter.py
 ```
 And execute the code:
 ```python
-cns_pdb_converter.py file_name.pdb
+cns_pdb_converter file_name.pdb
 ```
