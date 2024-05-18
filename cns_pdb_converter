@@ -20,9 +20,31 @@ def main():
 
     def modify_nh2(lines):
         for i, line in enumerate(lines):
-            lines[i] = line.replace("H   NH2    ", "HN1 NH2    ").replace("H'  NH2    ", "HN2 NH2    ")
+            lines[i] = line.replace("H   NH2    ", "HN1 NH2    ").replace("H'  NH2    ", "HN2 NH2    ").replace("N   NH2    ", "NH  NH2    ")
 
         return lines
+
+    def modify_pdb(lines):
+        modified_lines = []
+        previous_residue = ""
+        previous_residue_number = ""
+
+        for line in lines:
+            if line.startswith('ATOM'):
+                residue = line[17:20]
+                residue_number = line[22:26].strip()
+
+                if ' NH2 ' in line:
+                    line = line.replace(' NH2 ', f' {previous_residue} ')
+                    line = line.replace(f' {residue_number} ', f' {previous_residue_number} ')
+                else:
+                    previous_residue = residue
+                    previous_residue_number = residue_number
+
+            modified_lines.append(line)
+
+        return modified_lines
+
 
     def correct_model_endmdl(lines):
         num_models = 0
@@ -138,6 +160,7 @@ def main():
 
     # Apply modifications in the desired sequence
     lines = modify_nh2(lines)
+    lines = modify_pdb(lines)
     lines = correct_model_endmdl(lines)
     lines = insert_atoms(lines)
     lines = atoms_from_chimera(lines)
@@ -147,7 +170,7 @@ def main():
     lines = remove_conect_lines_except_last_model(lines)
 
     # Write the filtered content to the output file
-    with open(current_directory + "/output.pdb", 'w') as outfile:
+    with open(args.pdbfile+"_01", 'w') as outfile:
         outfile.writelines(lines)
 
 if __name__ == "__main__":
